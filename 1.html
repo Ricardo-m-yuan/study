@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>无标题文档</title>
+		<style>
+			.wrap {
+				width: 700px;
+				height: 280px;
+				border: 5px solid #000;
+				overflow: hidden;
+				position: relative;
+				margin: 50px auto;
+			}
+			
+			img {
+				vertical-align: top;	
+			}
+			
+			#list {
+				width: 700px;
+				position: absolute;
+				z-index: 1;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				left: 0;
+				top: 0;
+			}
+			
+			#navs {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				padding: 5px 0;
+				text-align: center;
+				background: rgba(255, 255, 255, 0.5);
+				height: 20px;
+				bottom: -40px;
+				z-index: 2;
+			}
+			
+			#navs a {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				background: #DDD;
+				margin: 0 3px;
+				border-radius:50%;
+			}
+			
+			#navs a.active {
+				background: #f60;
+			}
+			
+			#wrap>a {
+				width: 40px;
+				height: 40px;
+				background: #fff;
+				font: 30px / 40px "宋体";
+				color: #000;
+				position: absolute;
+				top: 120px;
+				z-index: 3;
+				text-decoration: none;
+				text-align: center;
+				opacity: .5;
+				filter: alpha(opacity=50);
+				transition: .3s opacity;
+			}
+			
+			#wrap>a:hover {
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+			
+			#wrap .left {
+				left: -50px;
+			}
+			
+			#wrap .right {
+				right: -50px;
+			}
+		</style>
+		<script src="js/newtools.js"></script>
+		<script>
+			var arrImg = ["img/img1.jpg", "img/img2.jpg", "img/img3.jpg", "img/img4.jpg", "img/img5.jpg", "img/img6.jpg"];
+			window.onload = function() {
+				var prev = document.getElementById('prev');
+				var next = document.getElementById('next');
+				var wrap = document.getElementById('wrap');
+				var list = document.getElementById('list');
+				var img = list.getElementsByTagName('img');
+				var nav = document.getElementById('navs');
+				var num = 0;
+				for(var i=0;i<arrImg.length;i++){
+					nav.innerHTML+='<a></a>'
+				}
+				var as =nav.getElementsByTagName("a");
+				as[0].className="active"
+				
+				for(var i=0;i<arrImg.length;i++){
+					as[i].index=i;
+					as[i].onclick =function(){
+						num=this.index;
+
+					}
+				}
+				
+				
+				wrap.onmouseover = function() {
+					move(prev, "left", 200, 0, "linear");
+					move(next, "right", 200, 0, "linear");
+					move(nav, "bottom", 200,0 , "linear");
+				}
+
+				wrap.onmouseout = function() {
+					move(prev, "left", 200, -50, "linear");
+					move(next, "right", 200, -50, "linear");
+					move(nav, "bottom", 200,-50, "linear");
+				}
+
+				next.onclick = function() {
+					num++;
+					img[0].src = arrImg[num - 1]; //第0
+					img[1].src = arrImg[num];
+					if(num > arrImg.length - 1) {
+						img[0].src = arrImg[arrImg.length - 1]; //第0
+						img[1].src = arrImg[0];
+						num = 0;
+					}
+					list.style.top = 0;
+					move(list, "top", 600, -280, "linear");
+				}
+				prev.onclick = function() {
+					num--;
+					img[0].src = arrImg[num]; //  最后一张
+					img[1].src = arrImg[num+1];
+					if(num < 0) {
+						img[0].src = arrImg[arrImg.length-1]; 
+						img[1].src = arrImg[0];
+						num = arrImg.length-1;
+					}
+					list.style.top = -280+"px";
+					move(list, "top", 600, 0, "linear");
+				}
+			};
+		</script>
+	</head>
+
+	<body>
+		<section class="wrap" id="wrap">
+			<div id="list">
+				<img src="img/img1.jpg" />
+				<img src="img/img2.jpg" />
+			</div>
+			<nav id="navs"></nav>
+			<a href="javascript:;" class="left" id="prev">&lt;</a>
+			<a href="javascript:;" class="right" id="next">&gt;</a>
+		</section>
+	</body>
+
+</html>
